@@ -17,16 +17,31 @@ namespace FiguresLibrary
             if (sides == null || sides.Length != 3)
                 throw new ArgumentException("Triangle(): invalid parametres");
 
+            if (!isExists(sides))
+                throw new Exception("such triangle doesn't exists");
+
             for (int i = 0; i < sides.Length; i++)
                 // Так лучше double не сравнивать
                 if (sides[i] >= 0.0) _sides[i] = sides[i];
                 else throw new Exception("??? side length <= 0 ???");
         }
 
+        // Проверка условия:
+        //     может ли существовать треугольник с такими сторонами или нет
+        private bool isExists(double[] sides)
+        {
+            if (sides[0] >= sides[1] + sides[2] ||
+                sides[1] >= sides[0] + sides[2] ||
+                sides[2] >= sides[0] + sides[1])
+                return false;
+
+            return true;
+        }
+
         // Проверка осуществляется с помощью теоремы Пифагора
         public bool isRectangular()
         {
-            // Сторону с максимальной стороной в конец массива _sides
+            // Сторону с максимальной длиной в конец массива _sides
             for (int i = 0; i < _sides.Length - 1; ++i)
             {
                 if (_sides[i] > _sides[_sides.Length - 1])
